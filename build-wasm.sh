@@ -65,6 +65,9 @@ cd build-wasm
 emcmake cmake -DCOMPILE_WASM=on -DPACKAGE_DIR="../models/" ../
 emmake make -j
 
+#     3. Add simd parameter to wasm instantiation 
+sed -i.bak 's/var result = WebAssembly.instantiateStreaming(response, info);/var result = WebAssembly.instantiateStreaming(response, info,{simdWormhole:true});/g' wasm/bergamot-translator-worker.js
+
 # The artefacts (.js and .wasm files) will be available in `wasm` folder of build directory ("build-wasm" in this case).
 
 exit 0

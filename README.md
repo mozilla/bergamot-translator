@@ -76,7 +76,10 @@ Bergamot translator provides a unified API for ([Marian NMT](https://marian-nmt.
             emcmake cmake -DCOMPILE_WASM=on ../
             emmake make -j
             ```
-
+        * Enable SIMD in the Wasm instantiation
+            ```
+            sed -i.bak 's/var result = WebAssembly.instantiateStreaming(response, info);/var result = WebAssembly.instantiateStreaming(response, info,{simdWormhole:true});/g' wasm/bergamot-translator-worker.js
+            ```
     The artefacts (.js and .wasm files) will be available in `wasm` folder of build directory ("build-wasm" in this case).
 
 #### Recompiling
