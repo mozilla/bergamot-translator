@@ -1,5 +1,7 @@
 # Bergamot Translator
 
+[![CircleCI badge](https://img.shields.io/circleci/project/github/mozilla/bergamot-translator/main.svg?label=CircleCI)](https://circleci.com/gh/mozilla/bergamot-translator/)
+
 Bergamot translator provides a unified API for ([Marian NMT](https://marian-nmt.github.io/) framework based) neural machine translation functionality in accordance with the [Bergamot](https://browser.mt/) project that focuses on improving client-side machine translation in a web browser.
 
 ## Build Instructions
@@ -46,8 +48,8 @@ Bergamot translator provides a unified API for ([Marian NMT](https://marian-nmt.
     If you want to package bergamot project specific models, please follow these instructions:
     ```bash
     mkdir models
-    git clone https://github.com/mozilla-applied-ml/bergamot-models
-    cp -rf bergamot-models/* models
+    git clone --depth 1 --branch main --single-branch https://github.com/mozilla-applied-ml/bergamot-models
+    cp -rf bergamot-models/prod/* models
     gunzip models/*/*
     ```
 
@@ -75,6 +77,12 @@ Bergamot translator provides a unified API for ([Marian NMT](https://marian-nmt.
             emmake make -j
             ```
 
+    3. Enable SIMD Wormhole via Wasm instantiation API in generated artifacts
+        ```
+        sed -i.bak 's/var result = WebAssembly.instantiateStreaming(response, info);/var result = WebAssembly.instantiateStreaming(response, info, {simdWormhole:true});/g' wasm/bergamot-translator-worker.js
+        sed -i.bak 's/return WebAssembly.instantiate(binary, info);/return WebAssembly.instantiate(binary, info, {simdWormhole:true});/g' wasm/bergamot-translator-worker.js
+        sed -i.bak 's/var module = new WebAssembly.Module(bytes);/var module = new WebAssembly.Module(bytes, {simdWormhole:true});/g' wasm/bergamot-translator-worker.js
+        ```
     The artefacts (.js and .wasm files) will be available in `wasm` folder of build directory ("build-wasm" in this case).
 
 #### Recompiling
