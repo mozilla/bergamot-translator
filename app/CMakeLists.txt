@@ -7,4 +7,7 @@ if (NOT USE_WASM_COMPATIBLE_SOURCES)
 
     add_executable(marian-decoder-new marian-decoder-new.cpp)
     target_link_libraries(marian-decoder-new PRIVATE bergamot-translator)
+
+    add_executable(translate translate.cpp)
+    target_link_libraries(translate PRIVATE bergamot-translator)
 endif()
