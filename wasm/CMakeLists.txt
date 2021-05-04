@@ -26,6 +26,9 @@ set(LINKER_FLAGS "${LINKER_FLAGS} -lworkerfs.js")
 # Avoid node.js-code in emscripten glue-code
 set(LINKER_FLAGS "${LINKER_FLAGS} -s ENVIRONMENT=web,worker")
 
+# Don't run closure compiler on emscripted glue-code
+set(LINKER_FLAGS "${LINKER_FLAGS} --closure 0")
+
 set_target_properties(bergamot-translator-worker PROPERTIES
                         SUFFIX ".js"
                         LINK_FLAGS ${LINKER_FLAGS}
